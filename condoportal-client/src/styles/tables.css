@@ -1,0 +1,26 @@
+/* CondoPortal · Frontend 2 · TAREA 01
+   Base declarativa para tablas responsivas.
+
+   Envoltura responsiva: el scroll horizontal queda contenido dentro del
+   panel, nunca en el documento. Sustituye la inyección de estilos inline. */
+.table-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  /* momentum scroll en iOS */
+  overscroll-behavior-x: contain;
+}
+
+/* Reset estructural mínimo de la tabla contenida. */
+.table-container>.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Feedback táctil declarativo: reemplaza los listeners touchstart / touchend. */
+@media (hover: none) {
+  .table-container .table tbody tr:active {
+    background: var(--surface-hover, rgba(160, 115, 79, 0.25));
+  }
+}

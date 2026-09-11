@@ -1,0 +1,337 @@
+/* CondoPortal · Frontend 2 · TAREA 02
+   Vista completa "Historial de Movimientos".
+
+   Las primitivas compartidas (.sr-only, .btn, .filtros, .badge, .skeleton-barra)
+   se promovieron a componentes.css: aquí sólo queda lo propio de esta vista.
+
+/* Isla de la vista --------------------------------------------------- */
+.historial {
+  margin-block: var(--space-6);
+  padding: var(--space-6);
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--muted);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+}
+
+.historial__head {
+  margin-bottom: var(--space-4);
+}
+
+.historial__titulo {
+  margin: 0 0 var(--space-1);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary-solid);
+}
+
+.historial__desc {
+  margin: 0;
+  max-width: 60ch;
+  font-size: 0.875rem;
+  color: var(--sub);
+}
+
+.historial__resumen {
+  margin: 0 0 var(--space-2);
+  font-size: 0.8125rem;
+  color: var(--sub);
+}
+
+/* La tabla se presenta como un bloque contenido sobre la isla. */
+.historial .table-container {
+  background: var(--surface);
+  border: 1px solid var(--muted);
+  border-radius: 12px;
+}
+
+/* Tabla ------------------------------------------------------------- */
+.table--historial {
+  font-size: 0.9375rem;
+  color: var(--text);
+}
+
+.table--historial thead th {
+  padding: 0.75rem 0.875rem;
+  background: var(--th-bg);
+  color: var(--th-fg);
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.table--historial thead th:first-child {
+  border-top-left-radius: 12px;
+}
+
+.table--historial thead th:last-child {
+  border-top-right-radius: 12px;
+}
+
+.table--historial tbody td {
+  padding: 0.75rem 0.875rem;
+  border-bottom: 1px solid var(--muted);
+  vertical-align: middle;
+}
+
+.table--historial tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+@media (hover: hover) {
+  .table--historial tbody tr.mov:hover {
+    background: var(--surface-hover);
+  }
+}
+
+.mov__fecha {
+  white-space: nowrap;
+  color: var(--sub);
+}
+
+.mov__concepto-texto {
+  display: block;
+}
+
+.mov__meta {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.75rem;
+  color: var(--sub);
+}
+
+.folio {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.8125rem;
+  color: var(--sub);
+}
+
+.mov__monto {
+  text-align: right;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.mov__saldo {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--sub);
+}
+
+.mov__saldo-na {
+  color: var(--muted);
+}
+
+/* Color del monto según el tipo de movimiento */
+.mov--ingreso .mov__monto {
+  color: var(--mov-ingreso);
+}
+
+.mov--egreso .mov__monto,
+.mov--pago .mov__monto {
+  color: var(--mov-egreso);
+}
+
+.mov--otro .mov__monto {
+  color: var(--sub);
+}
+
+/* Píldora de tipo */
+.tipo-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.2em 0.65em;
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tipo-pill.mov--ingreso {
+  color: var(--mov-ingreso);
+}
+
+.tipo-pill.mov--egreso,
+.tipo-pill.mov--pago {
+  color: var(--mov-egreso);
+}
+
+.tipo-pill.mov--otro {
+  color: var(--sub);
+}
+
+/* Estados: carga / error / vacío --------------------------------- */
+.hist-estado {
+  padding: var(--space-8) var(--space-4);
+  text-align: center;
+  color: var(--sub);
+}
+
+.hist-estado svg {
+  color: var(--muted);
+  margin-bottom: var(--space-3);
+}
+
+.hist-estado--error svg {
+  color: var(--badge-danger-bg);
+}
+
+.hist-estado__titulo {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.hist-estado__texto {
+  margin: 0 0 var(--space-4);
+  font-size: 0.875rem;
+}
+
+/* Skeleton de carga */
+.hist-estado>.table--historial {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.skeleton-fila td {
+  padding: 0.9rem 0.875rem;
+  border-bottom: 1px solid var(--muted);
+}
+
+.skeleton-fila td:nth-child(2) {
+  width: 34%;
+}
+
+/* Paginación ---------------------------------------------------- */
+.paginacion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.paginacion__estado {
+  font-size: 0.875rem;
+  color: var(--sub);
+}
+
+/* Vista de tarjetas apiladas < 768px -------------------------- */
+@media (max-width: 767px) {
+  .historial {
+    padding: var(--space-4);
+  }
+
+  /* En tarjetas, la tabla no necesita marco propio. */
+  .historial .table-container {
+    background: transparent;
+    border: 0;
+  }
+
+  .table--historial thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .table--historial,
+  .table--historial tbody,
+  .table--historial tr,
+  .table--historial td {
+    display: block;
+    width: 100%;
+  }
+
+  .table--historial tbody tr.mov {
+    margin-bottom: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--muted);
+    border-radius: 12px;
+    background: var(--surface);
+  }
+
+  .table--historial tbody tr.mov:hover {
+    background: var(--surface);
+  }
+
+  .table--historial tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-4);
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--muted);
+    text-align: right;
+  }
+
+  .table--historial tbody tr td:last-child {
+    border-bottom: 0;
+  }
+
+  .table--historial tbody td::before {
+    content: attr(data-label);
+    flex: none;
+    text-align: left;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--sub);
+  }
+
+  /* El concepto es texto largo: se apila (etiqueta arriba) y se lee a la izquierda */
+  .table--historial tbody td.mov__concepto {
+    display: block;
+    text-align: left;
+  }
+
+  .table--historial tbody td.mov__concepto::before {
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+
+  .mov__meta {
+    text-align: left;
+  }
+
+  /* Skeleton en móvil: barras simples, sin etiquetas */
+  .skeleton-fila td {
+    display: block;
+    padding: 0.5rem 0;
+    border-bottom: 0;
+  }
+
+  .skeleton-fila td::before {
+    content: none;
+  }
+
+  .paginacion {
+    flex-wrap: wrap;
+  }
+
+  .paginacion .btn {
+    flex: 1 1 auto;
+  }
+
+  .paginacion__estado {
+    order: -1;
+    flex: 1 0 100%;
+    text-align: center;
+  }
+}

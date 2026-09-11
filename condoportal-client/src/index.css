@@ -1,0 +1,163 @@
+/* Estilos globales de CondoPortal. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+
+  background: var(--bg);
+  background-attachment: fixed;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+
+a {
+  color: var(--primary-solid);
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  color: var(--text);
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--radio-sm);
+}
+
+/* Quien pidió menos movimiento no debería ver ninguna animación decorativa. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Armazón de la aplicación --------------------------------------------- */
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.contenido {
+  flex: 1;
+  width: 100%;
+  max-width: var(--ancho-contenido);
+  margin-inline: auto;
+  padding: var(--space-6) var(--space-4) var(--space-12);
+}
+
+.pagina {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.pagina__cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.titulo {
+  margin: 0;
+  font-size: clamp(1.5rem, 1.2rem + 1.4vw, 2rem);
+  font-weight: 700;
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.subtitulo {
+  margin: var(--space-6) 0 var(--space-3);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.sub {
+  margin: var(--space-1) 0 0;
+  max-width: 62ch;
+  font-size: 0.9375rem;
+  color: var(--sub);
+}
+
+.migas {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+/* El primer enlace de la página, visible sólo al tabular. */
+.saltar-al-contenido {
+  position: absolute;
+  left: var(--space-4);
+  top: -100px;
+  z-index: 100;
+  padding: var(--space-2) var(--space-4);
+  background: var(--primary-solid);
+  color: #fff;
+  border-radius: var(--radio);
+  text-decoration: none;
+  transition: top var(--transicion);
+}
+
+.saltar-al-contenido:focus {
+  top: var(--space-4);
+  color: #fff;
+}
+
+.pantalla-carga {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: var(--space-8);
+}
+
+/* Rejillas reutilizables ------------------------------------------------ */
+.rejilla-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .rejilla-2 {
+    grid-template-columns: 1.15fr 0.85fr;
+  }
+}

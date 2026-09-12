@@ -26,6 +26,7 @@ function PagosPage() {
     <div className="pagina">
       <header className="pagina__cabecera">
         <div>
+          <p className="eyebrow">Finanzas de la comunidad</p>
           <h1 className="titulo">Pagos</h1>
           <p className="sub">Revisa tu saldo, paga tus cuotas y consulta tus movimientos.</p>
         </div>

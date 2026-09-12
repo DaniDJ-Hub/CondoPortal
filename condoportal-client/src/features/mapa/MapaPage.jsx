@@ -35,6 +35,7 @@ function MapaPage() {
     <div className="pagina">
       <header className="pagina__cabecera">
         <div>
+          <p className="eyebrow">Tu entorno</p>
           <h1 className="titulo">Mapa del condominio</h1>
           <p className="sub">Amenidades, servicios y puntos de interés cercanos.</p>
         </div>

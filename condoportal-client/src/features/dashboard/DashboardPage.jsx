@@ -26,6 +26,7 @@ function DashboardPage() {
     <div className="pagina">
       <header className="pagina__cabecera">
         <div>
+          <p className="eyebrow">Resumen de tu comunidad</p>
           <h1 className="titulo">Hola, {nombreCorto}</h1>
           <p className="sub">Así va la salud financiera del condominio.</p>
         </div>

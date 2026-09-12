@@ -20,6 +20,19 @@
 .es-ingreso { color: var(--mov-ingreso); }
 .es-egreso { color: var(--mov-egreso); }
 
+/* Antetítulo dorado sobre el encabezado de cada vista. Es el recurso que más
+   se repite en el diseño de Frontend 1: allí estaba duplicado como
+   .home-eyebrow, .pagos-eyebrow, .dashboard-eyebrow… con los mismos valores.
+   Aquí vive una sola vez. */
+.eyebrow {
+  margin: 0 0 var(--space-2);
+  color: var(--dorado);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 /* Botones -------------------------------------------------------------- */
 .btn {
   display: inline-flex;
@@ -95,12 +108,15 @@
 }
 
 /* Paneles y secciones --------------------------------------------------- */
+/* La sombra larga y difusa (--sombra-tarjeta) es lo que da a las islas el
+   relieve del diseño de Frontend 1; la anterior --sombra-sm las dejaba
+   pegadas al fondo. */
 .panel {
   padding: var(--space-6);
   background: var(--panel);
   border: 1px solid var(--panel-borde);
   border-radius: var(--radio-lg);
-  box-shadow: var(--sombra-sm);
+  box-shadow: var(--sombra-tarjeta);
 }
 
 .panel--centrado {
@@ -123,6 +139,12 @@
 
 .seccion__cabecera--centrada {
   text-align: center;
+}
+
+/* `.seccion__sub` lleva un max-width, así que dentro de una cabecera centrada
+   el texto se centra pero su caja se queda pegada a la izquierda. */
+.seccion__cabecera--centrada .seccion__sub {
+  margin-inline: auto;
 }
 
 .seccion__titulo {

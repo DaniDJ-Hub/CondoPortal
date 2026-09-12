@@ -47,47 +47,10 @@ body.dark .barra { background: rgba(44, 24, 16, 0.88); }
   padding: var(--space-3) var(--space-4);
 }
 
-.barra__menu {
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  margin-left: auto;
-  background: transparent;
-  border: 0;
-  border-radius: var(--radio-sm);
-  color: var(--text);
-  cursor: pointer;
-}
-
-.nav {
-  display: none;
-  flex-direction: column;
-  gap: var(--space-1);
-  width: 100%;
-}
-
-.nav--abierta { display: flex; }
-
-.nav__enlace {
-  padding: 0.6rem 0.8rem;
-  border-radius: var(--radio-sm);
-  font-size: 0.9375rem;
-  font-weight: 600;
-  color: var(--sub);
-  text-decoration: none;
-  transition: background var(--transicion), color var(--transicion);
-}
-
-.nav__enlace:hover {
-  background: var(--surface-hover);
-  color: var(--text);
-}
-
-.nav__enlace--activo {
-  background: var(--surface);
-  color: var(--primary-solid);
-}
+/* La navegación la dibuja PillNav (styles/navegacion.css). Aquí sólo se
+   coloca dentro de la barra: en pantallas estrechas el botón compacto se va
+   al extremo derecho, junto a la marca. */
+.barra__interior .pill-nav-container { margin-left: auto; }
 
 .barra__acciones {
   display: flex;
@@ -125,14 +88,9 @@ body.dark .barra { background: rgba(44, 24, 16, 0.88); }
 .cuenta__rol { font-size: 0.7rem; color: var(--sub); text-transform: capitalize; }
 
 @media (min-width: 900px) {
-  .barra__menu { display: none; }
-
-  .nav {
-    display: flex;
-    flex-direction: row;
-    width: auto;
-    margin-left: var(--space-4);
-  }
+  /* Con sitio, las píldoras se colocan junto a la marca y las acciones de
+     cuenta se van al extremo opuesto. */
+  .barra__interior .pill-nav-container { margin-left: var(--space-4); }
 
   .barra__acciones {
     width: auto;
@@ -143,19 +101,39 @@ body.dark .barra { background: rgba(44, 24, 16, 0.88); }
 }
 
 /* Acceso: login y registro ---------------------------------------------- */
+/* Frontend 1 presenta el acceso como una tarjeta centrada con la fotografía
+   a un lado, no como una pantalla partida de lado a lado. */
 .acceso {
   display: grid;
-  grid-template-columns: 1fr;
+  place-items: center;
   min-height: 100vh;
+  padding: clamp(0px, 4vw, var(--space-8));
 }
 
+.acceso__tarjeta {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: min(1120px, 100%);
+  min-height: min(680px, calc(100vh - var(--space-10)));
+  overflow: hidden;
+  background: var(--panel);
+  border: 1px solid var(--panel-borde);
+  border-radius: var(--radio-lg);
+  box-shadow: var(--shadow);
+}
+
+/* La columna de la fotografía: la imagen va de fondo con el velo del hero
+   encima, que es lo que mantiene legible el texto blanco sobre la foto. */
 .acceso__promo {
   display: none;
   flex-direction: column;
   justify-content: space-between;
   gap: var(--space-8);
   padding: var(--space-8);
-  background: linear-gradient(150deg, #4a2c18, #8a5a34 55%, #c2956f);
+  background-color: var(--hero-fondo);
+  background-image: var(--hero-velo), url('../assets/img/login.jpg');
+  background-position: center;
+  background-size: cover;
   color: #fff;
 }
 
@@ -231,8 +209,11 @@ body.dark .barra { background: rgba(44, 24, 16, 0.88); }
 }
 
 @media (min-width: 900px) {
-  .acceso { grid-template-columns: 1fr 1fr; }
-  .acceso__promo { display: flex; }
+  /* Proporción de Frontend 1: la foto pesa algo más que el formulario.
+     La primera columna es el formulario (order: 1), la segunda la foto. */
+  .acceso__tarjeta { grid-template-columns: minmax(280px, 0.85fr) minmax(320px, 1.15fr); }
+  .acceso__promo { display: flex; order: 2; }
+  .acceso__panel { order: 1; }
 }
 
 /* Landing --------------------------------------------------------------- */
@@ -266,48 +247,77 @@ body.dark .barra { background: rgba(44, 24, 16, 0.88); }
   .landing__enlace { display: inline; }
 }
 
+/* El hero de Frontend 1 va a sangre, así que el contenedor de la landing deja
+   de recortar el ancho y son las secciones interiores las que se centran. */
 .landing__contenido {
   flex: 1;
   width: 100%;
-  max-width: var(--ancho-contenido);
-  margin-inline: auto;
-  padding: var(--space-8) var(--space-4) var(--space-12);
+  padding: 0 0 var(--space-12);
 }
 
 .hero {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-8);
+  position: relative;
+  isolation: isolate;
+  display: flex;
   align-items: center;
+  min-height: 430px;
+  overflow: hidden;
+  padding: clamp(56px, 9vw, 110px) clamp(20px, 8vw, 120px) clamp(48px, 7vw, 88px);
+  background: var(--hero-fondo);
+  color: #fff;
 }
 
-.hero__eyebrow {
-  margin: 0 0 var(--space-2);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--primary-solid);
+/* Lienzo animado detrás del texto, y sobre él un velo que asegura el
+   contraste: sin el velo el blanco se pierde en las zonas claras. */
+.hero__hilos {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  opacity: 0.62;
 }
+
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--hero-velo);
+}
+
+.hero__contenido { width: min(680px, 100%); }
+
+/* Sobre el velo oscuro, el botón fantasma —pensado para fondos claros— queda
+   ilegible: dentro del hero se dibuja en blanco. */
+.hero .btn--ghost {
+  color: #fff;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.55);
+}
+
+.hero .btn--ghost:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+/* Sobre el velo oscuro el dorado del tema claro no contrasta: el hero usa el
+   tono claro en ambos modos, igual que en el diseño de Frontend 1. */
+.hero .eyebrow { color: #d6ad62; }
 
 .hero__titulo {
   margin: 0 0 var(--space-4);
-  font-size: clamp(2rem, 1.3rem + 3.2vw, 3.25rem);
+  /* Tipografía muy elástica, marca de la casa de Frontend 1. */
+  font-size: clamp(2.5rem, 6vw, 5rem);
   font-weight: 800;
+  line-height: 0.98;
 }
 
-.hero__acento {
-  background: var(--gradient-text);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
+.hero__acento { color: #e7c79f; }
 
 .hero__texto {
   margin: 0 0 var(--space-6);
-  max-width: 54ch;
-  font-size: 1.0625rem;
-  color: var(--sub);
+  max-width: 50ch;
+  font-size: 1.08rem;
+  line-height: 1.6;
+  color: #e9ddd0;
 }
 
 .hero__acciones {
@@ -324,21 +334,14 @@ body.dark .barra { background: rgba(44, 24, 16, 0.88); }
 }
 
 .hero__cifras dd { margin: 0; display: flex; flex-direction: column; }
-.hero__cifras strong { font-size: 1.6rem; font-weight: 800; color: var(--primary-solid); }
-.hero__cifras span { font-size: 0.8125rem; color: var(--sub); }
+.hero__cifras strong { font-size: 1.6rem; font-weight: 800; color: #e7c79f; }
+.hero__cifras span { font-size: 0.8125rem; color: #cbb9a6; }
 
-.hero__arte { display: flex; justify-content: center; }
-.hero__ilustracion { width: min(420px, 100%); }
-.hero__sol { fill: #e7c79f; opacity: 0.55; }
-.hero__ventana { fill: #f6e6d3; opacity: 0.75; }
-.hero__suelo { fill: var(--muted); }
-.hero__arbusto { fill: #6d8f52; }
-
-@media (min-width: 900px) {
-  .hero { grid-template-columns: 1.05fr 0.95fr; }
+.amenidades {
+  max-width: var(--ancho-contenido);
+  margin: var(--space-12) auto 0;
+  padding-inline: var(--space-4);
 }
-
-.amenidades { margin-top: var(--space-12); }
 
 .amenidades__grid {
   display: grid;
@@ -455,7 +458,7 @@ body.dark .barra { background: rgba(44, 24, 16, 0.88); }
   border-radius: var(--radio-lg);
   /* Una franja de color a la izquierda da el tono sin teñir toda la tarjeta. */
   border-left: 3px solid var(--muted);
-  box-shadow: var(--sombra-sm);
+  box-shadow: var(--sombra-tarjeta);
 }
 
 .kpi--positivo { border-left-color: var(--exito); }
@@ -787,6 +790,74 @@ body.dark .grafico__tooltip { background: #3a2516; }
 @media (min-width: 760px) {
   .resumen-cuenta { grid-template-columns: 0.9fr 1.1fr; align-items: center; }
   .resumen-cuenta__datos { padding-top: 0; padding-left: var(--space-6); border-top: 0; border-left: 1px solid var(--muted); }
+}
+
+/* Banda destacada -------------------------------------------------------- */
+/* Presenta la vista con una imagen a un lado y un texto corto al otro. En el
+   diseño de Frontend 1 esto estaba escrito dos veces —.gastos-feature y
+   .marketplace-content— con los mismos valores; aquí es un solo bloque y cada
+   vista elige qué poner en el hueco de la derecha. */
+.destacado {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: var(--space-6);
+  /* Las tarjetas de la baraja van giradas y se abren en abanico más allá de
+     su caja; sin recorte empujaban la página a lo ancho en tablet y móvil. */
+  overflow: hidden;
+  padding: var(--space-6);
+  background: var(--panel);
+  border: 1px solid var(--panel-borde);
+  border-radius: var(--radio-lg);
+  box-shadow: var(--sombra-tarjeta);
+}
+
+.destacado__titulo {
+  margin: 0 0 var(--space-2);
+  font-size: clamp(1.35rem, 1.1rem + 1vw, 1.8rem);
+}
+
+/* Marco de doble filete de Frontend 1: borde exterior y un anillo interior del
+   color del panel, con la imagen contenida (no recortada) dentro. */
+.destacado__marco {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: clamp(220px, 28vw, 330px);
+  padding: 10px;
+  background: var(--surface);
+  border: 2px solid var(--panel-borde);
+  border-radius: var(--radio);
+  box-shadow: inset 0 0 0 4px var(--panel);
+}
+
+.destacado__marco img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: var(--radio-sm);
+}
+
+.destacado__baraja {
+  width: min(100%, 300px);
+  aspect-ratio: 1;
+  justify-self: center;
+}
+
+@media (min-width: 760px) {
+  /* Con imagen: manda la foto, que ocupa el 42 % de la banda. */
+  .destacado { grid-template-columns: minmax(260px, 42%) minmax(0, 1fr); align-items: start; }
+
+  /* Con baraja: manda el texto y las fotos se apoyan a la derecha. */
+  .destacado--portada { grid-template-columns: minmax(0, 1fr) minmax(240px, 320px); align-items: center; }
+  .destacado--portada .destacado__baraja { justify-self: end; }
+}
+
+@media (max-width: 759px) {
+  .destacado__marco { height: clamp(220px, 58vw, 320px); }
 }
 
 /* Marketplace ------------------------------------------------------------ */

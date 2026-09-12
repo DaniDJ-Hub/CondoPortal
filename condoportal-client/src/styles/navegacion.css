@@ -1,0 +1,220 @@
+/* CondoPortal · navegación en píldoras (PillNav).
+
+   Diseño de Frontend 1 traducido a los tokens café/dorado. Dos diferencias
+   respecto al original:
+
+   - El corte a móvil pasa de 768 px a 900 px, que es donde `.barra` ya
+     reordena la cabecera en vistas.css. Con dos cortes distintos aparecían
+     el menú de la barra y el de las píldoras a la vez.
+   - Los colores salen de variables del tema en lugar de props, así que la
+     barra cambia sola entre claro y oscuro. */
+
+.pill-nav-container {
+  position: relative;
+  z-index: 30;
+}
+
+.pill-nav {
+  --nav-h: 40px;
+  --pill-pad-x: 16px;
+  --pill-gap: 3px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  width: max-content;
+}
+
+.pill-nav-items {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: var(--nav-h);
+  background: var(--pill-base);
+  border-radius: var(--radio-pill);
+}
+
+.pill-list {
+  display: flex;
+  align-items: stretch;
+  gap: var(--pill-gap);
+  height: 100%;
+  margin: 0;
+  padding: 3px;
+  list-style: none;
+}
+
+.pill-list > li {
+  display: flex;
+  height: 100%;
+}
+
+.pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0 var(--pill-pad-x);
+  overflow: hidden;
+  background: var(--pill-bg);
+  border-radius: var(--radio-pill);
+  color: var(--pill-text);
+  /* `line-height: 0` deja que las dos etiquetas superpuestas ocupen el mismo
+     punto exacto durante el barrido vertical. */
+  line-height: 0;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.pill:hover { color: var(--pill-text); }
+
+/* El círculo que crece desde abajo al pasar el ratón. gsap le fija tamaño y
+   origen: aquí sólo se declara la forma y el color. */
+.pill .hover-circle {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  z-index: 1;
+  display: block;
+  border-radius: 50%;
+  background: var(--pill-base);
+  pointer-events: none;
+  will-change: transform;
+}
+
+.pill .label-stack {
+  position: relative;
+  z-index: 2;
+  display: inline-block;
+  line-height: 1;
+}
+
+.pill .pill-label {
+  position: relative;
+  z-index: 2;
+  display: inline-block;
+  line-height: 1;
+  will-change: transform;
+}
+
+.pill .pill-label-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  display: inline-block;
+  color: var(--pill-hover-text);
+  will-change: transform, opacity;
+}
+
+/* Punto bajo la píldora de la sección actual. */
+.pill.is-active::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  z-index: 4;
+  width: 10px;
+  height: 10px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: var(--pill-base);
+}
+
+/* Sin gsap (movimiento reducido) la etiqueta de repuesto queda encima de la
+   original y se lee doble; se oculta y el hover se marca con color plano. */
+@media (prefers-reduced-motion: reduce) {
+  .pill .pill-label-hover,
+  .pill .hover-circle { display: none; }
+
+  .pill:hover,
+  .pill:focus-visible {
+    background: var(--pill-base);
+    color: var(--pill-hover-text);
+  }
+}
+
+/* Menú compacto ---------------------------------------------------------- */
+.desktop-only { display: block; }
+.mobile-only { display: none; }
+
+.mobile-menu-button {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: var(--nav-h);
+  height: var(--nav-h);
+  padding: 0;
+  background: var(--pill-base);
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.hamburger-line {
+  width: 16px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--pill-bg);
+  transform-origin: center;
+}
+
+/* Se ancla al borde derecho porque en móvil el botón queda pegado a ese lado
+   de la barra; con `left: 0` el panel se salía de la pantalla. */
+.mobile-menu-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 998;
+  visibility: hidden;
+  min-width: 220px;
+  padding: 3px;
+  background: var(--pill-base);
+  border-radius: var(--radio-lg);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transform-origin: top center;
+}
+
+.mobile-menu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mobile-menu-link {
+  display: block;
+  padding: 11px 16px;
+  background: var(--pill-bg);
+  border-radius: var(--radio);
+  color: var(--pill-text);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background var(--transicion), color var(--transicion);
+}
+
+.mobile-menu-link:hover,
+.mobile-menu-link:focus-visible,
+.mobile-menu-link.is-active {
+  background: var(--pill-base);
+  color: var(--pill-hover-text);
+}
+
+@media (max-width: 899px) {
+  .desktop-only { display: none; }
+  .mobile-only { display: block; }
+  .mobile-menu-button { display: flex; }
+  .pill-nav { width: auto; }
+}

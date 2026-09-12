@@ -9,6 +9,7 @@ import { getGastos, getCategorias, eliminarGasto } from './api'
 import GastosList from './components/GastosList'
 import FormularioGasto from './components/FormularioGasto'
 import { fmtMoneda } from '../../shared/utils/formato'
+import imagenGastos from '../../assets/img/gastos.jpg'
 
 const FILTROS_INICIALES = { categoria: 'todos', desde: '', hasta: '' }
 
@@ -47,6 +48,7 @@ function GastosPage() {
     <div className="pagina">
       <header className="pagina__cabecera">
         <div>
+          <p className="eyebrow">Administración financiera</p>
           <h1 className="titulo">Gastos</h1>
           <p className="sub">En qué se invierte la cuota de mantenimiento.</p>
         </div>
@@ -56,6 +58,21 @@ function GastosPage() {
           </button>
         )}
       </header>
+
+      {/* Banda de presentación del diseño de Frontend 1. */}
+      <section className="destacado" aria-labelledby="gastos-destacado">
+        <div className="destacado__marco">
+          <img src={imagenGastos} alt="" />
+        </div>
+        <div>
+          <p className="eyebrow">Resumen visual</p>
+          <h2 id="gastos-destacado" className="destacado__titulo">Mantén tus gastos bajo control</h2>
+          <p className="sub">
+            Filtra por categoría y periodo para ver con claridad en qué se va la cuota
+            de mantenimiento del conjunto.
+          </p>
+        </div>
+      </section>
 
       <div className="panel">
         <form className="filtros" role="search" aria-label="Filtros de gastos" onSubmit={(e) => e.preventDefault()}>

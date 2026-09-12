@@ -47,6 +47,7 @@ function AdminPage() {
     <div className="pagina">
       <header className="pagina__cabecera">
         <div>
+          <p className="eyebrow">Gestión del conjunto</p>
           <h1 className="titulo">Panel de administración</h1>
           <p className="sub">Cifras del condominio y control de accesos al portal.</p>
         </div>

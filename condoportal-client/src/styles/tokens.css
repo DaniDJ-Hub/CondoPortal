@@ -73,6 +73,30 @@
 
   /* Transición única: mover esto de un lugar cambia toda la app */
   --transicion: 0.16s ease;
+
+  /* --- Lenguaje visual de Frontend 1 ----------------------------------
+     El diseño de F1 se apoya en cuatro recursos: un "eyebrow" dorado sobre
+     cada encabezado, tarjetas de esquina corta con sombra larga y difusa,
+     un hero a sangre con capa de color encima y tipografía muy elástica.
+     Aquí sólo viven los valores; las reglas están en vistas.css. */
+
+  /* Dorado del eyebrow: un paso más claro que --primary-solid para que
+     destaque sobre el café del fondo sin competir con los títulos. */
+  --dorado: #c2956f;
+
+  /* Sombra larga de las tarjetas de F1, traducida al café de la marca. */
+  --sombra-tarjeta: 0 12px 30px rgba(20, 12, 8, 0.28);
+
+  /* Capa que garantiza contraste del texto del hero sobre la animación. */
+  --hero-velo: linear-gradient(90deg, rgba(44, 24, 16, 0.92), rgba(44, 24, 16, 0.45));
+  --hero-fondo: #3d2818;
+
+  /* Navegación en píldoras (PillNav). Se pasan al componente como variables
+     CSS para que siga al tema sin recibir colores por props. */
+  --pill-base: var(--primary-solid);
+  --pill-bg: var(--panel);
+  --pill-text: var(--text);
+  --pill-hover-text: #fff;
 }
 
 /* Modo claro — valores extraídos del diseño de referencia del módulo Pagos. */
@@ -104,6 +128,13 @@ body.light {
   --info: #3f6a8c;
 
   --sombra-sm: 0 2px 10px rgba(120, 85, 60, 0.10);
+
+  /* En claro el dorado se oscurece: #c2956f no alcanza contraste AA sobre
+     la superficie crema. */
+  --dorado: #8a5a34;
+  --sombra-tarjeta: 0 12px 30px rgba(120, 85, 60, 0.14);
+  --hero-velo: linear-gradient(90deg, rgba(74, 44, 24, 0.90), rgba(74, 44, 24, 0.42));
+  --hero-fondo: #4a2c18;
 }
 
 /* El modo oscuro explícito reafirma los valores de :root, para que el toggle
@@ -135,4 +166,9 @@ body.dark {
 
   --skeleton: rgba(244, 241, 236, 0.13);
   --skeleton-brillo: rgba(244, 241, 236, 0.30);
+
+  --dorado: #c2956f;
+  --sombra-tarjeta: 0 12px 30px rgba(20, 12, 8, 0.28);
+  --hero-velo: linear-gradient(90deg, rgba(44, 24, 16, 0.92), rgba(44, 24, 16, 0.45));
+  --hero-fondo: #3d2818;
 }

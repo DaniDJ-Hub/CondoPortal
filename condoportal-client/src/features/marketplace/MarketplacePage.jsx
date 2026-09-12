@@ -5,8 +5,24 @@ import { useApi } from '../../shared/hooks/useApi'
 import { getNegocios, getCategorias } from './api'
 import NegocioCard from './components/NegocioCard'
 import { Contenido, SinDatos } from '../../shared/components/Estados'
+import Stack from '../../shared/components/Stack'
+import imagen1 from '../../assets/img/imagen1.jpg'
+import imagen2 from '../../assets/img/imagen2.jpg'
+import imagen3 from '../../assets/img/imagen3.jpg'
+import imagen4 from '../../assets/img/imagen4.jpg'
+import imagen5 from '../../assets/img/imagen5.jpg'
+import imagen6 from '../../assets/img/imagen6.jpg'
+import imagen7 from '../../assets/img/imagen7.jpg'
+import imagen8 from '../../assets/img/imagen8.jpg'
 
 const FILTROS_INICIALES = { categoria: 'todos', busqueda: '', destacados: false }
+
+// Fotos del carrusel de portada (Frontend 1). Se arman fuera del componente
+// para que `Stack` no rehaga el montón en cada render.
+const FOTOS = [imagen1, imagen2, imagen3, imagen4, imagen5, imagen6, imagen7, imagen8]
+const TARJETAS = FOTOS.map((src, indice) => (
+  <img key={src} src={src} alt={`Servicio destacado ${indice + 1}`} className="card-image" />
+))
 
 function MarketplacePage() {
   const [filtros, setFiltros] = useState(FILTROS_INICIALES)
@@ -34,10 +50,27 @@ function MarketplacePage() {
     <div className="pagina">
       <header className="pagina__cabecera">
         <div>
+          <p className="eyebrow">Servicios para tu comunidad</p>
           <h1 className="titulo">Marketplace</h1>
           <p className="sub">Negocios y servicios de tus vecinos y del barrio.</p>
         </div>
       </header>
+
+      {/* Portada de Frontend 1: la baraja de fotos se arrastra o se pulsa para
+          pasar a la siguiente. Es decorativa; el directorio real va debajo. */}
+      <section className="destacado destacado--portada" aria-labelledby="mkt-destacado">
+        <div>
+          <p className="eyebrow">Proveedores destacados</p>
+          <h2 id="mkt-destacado" className="destacado__titulo">Servicios para tu conjunto</h2>
+          <p className="sub">
+            Mantenimiento, hogar y bienestar, con la recomendación de quienes ya
+            los contrataron.
+          </p>
+        </div>
+        <div className="destacado__baraja" aria-hidden="true">
+          <Stack cards={TARJETAS} sendToBackOnClick mobileClickOnly />
+        </div>
+      </section>
 
       <div className="panel">
         <form className="filtros" role="search" aria-label="Buscar negocios" onSubmit={(e) => e.preventDefault()}>
